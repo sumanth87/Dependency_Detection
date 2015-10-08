@@ -59,7 +59,11 @@ int main(void)
 	return 0;
 }
 //----------End of Main
-
+/******----------------------------------------------------------------------------
+/
+/	Function to split the instruction to label(if exists), mnemonic and operands
+/	
+******----------------------------------------------------------------------------*/
 void split(char temp[])
 
 {
@@ -111,12 +115,18 @@ void split(char temp[])
 return;
 }
 
+/******----------------------------------------------------------------------------
+/
+/	Function to detect data dependency
+/	
+******----------------------------------------------------------------------------*/
 void data_dep(void)
 {
 	printf("\n1. Data Dependency---------------\n");
 	fprintf(wp,"\n\n1. Data Dependency------------------------------------------------\n");
 	for(int i=0;i<I-1;i++)
 	{
+		//Checking for data dependent operands
 		for(int j=i+1;j<I;j++)
 		{
 			if(strcmp(s[i].opd[0],s[j].opd[1])==0||strcmp(s[i].opd[0],s[j].opd[2])==0)
@@ -129,7 +139,11 @@ void data_dep(void)
 	}
 
 }
-
+/******----------------------------------------------------------------------------
+/
+/	Function to detect name dependency
+/	
+******----------------------------------------------------------------------------*/
 void name_dep(void)
 {
 	printf("\n2. Name Dependency---------------\n");
@@ -165,7 +179,11 @@ void name_dep(void)
 		}
 
 }
-
+/******----------------------------------------------------------------------------
+/
+/	Function to detect control dependency
+/	
+******----------------------------------------------------------------------------*/
 void control_dep(void)
 {
 	printf("\n3. Control Dependence-------\n");
@@ -173,12 +191,13 @@ void control_dep(void)
 	for(int i=0,branch=0,loop=0;i<I;i++)
 	{
 		int min,max=0;
-		if(strcmp(s[i].in_op,"BEZ")==0||strcmp(s[i].in_op,"BNE")==0)
+		//Checking for branch instruction 
+		if(strcmp(s[i].in_op,"BEZ")==0||strcmp(s[i].in_op,"BNE")==0)	
 		{
 
 			branch=i;
 			int x=s[branch].op-1;
-
+				//Checking for the destination of branch
 				for(int j=0;j<I;j++)
 				{
 					if(strcmp(s[j].label, s[branch].opd[x])==0)
